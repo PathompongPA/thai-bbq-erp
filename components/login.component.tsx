@@ -46,7 +46,7 @@ export default function Login() {
                         size="small"
                         variant="filled"
                         name="password"
-                        type="password"
+                        type={`${showPassword ? "text" : "password"}`}
                         slotProps={{
                             input: {
                                 endAdornment: (

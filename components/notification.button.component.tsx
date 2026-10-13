@@ -88,7 +88,7 @@ export default function NotificationButton({
                     paper: {
                         sx: {
                             width: {
-                                xs: 320,
+                                xs: "100%",
                                 sm: 400,
                             },
                             mt: 1,

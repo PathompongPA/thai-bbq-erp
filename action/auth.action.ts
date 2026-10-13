@@ -9,59 +9,65 @@ import { redirect } from "next/navigation";
 export async function login(formData: FormData) {
   const userName = formData.get("user") as string;
   const password = formData.get("password") as string;
-  console.log("user , password : ", userName, password);
+
+  if (!userName || !password) {
+    return { success: false, message: "กรุณากรอกข้อมูลให้ครบถ้วน" };
+  }
 
   try {
-    await prisma.$transaction(async (tx) => {
-      const user = await tx.user.findFirst({
-        where: {
-          email: userName,
-        },
-      });
+    // 1. ค้นหา User (ไม่ต้องใช้ Transaction เปลือง Connection)
+    const user = await prisma.user.findFirst({
+      where: { email: userName },
+    });
 
-      if (!user) {
-        return {
-          success: false,
-          message: "Invalid username or password",
-        };
-      }
+    if (!user) {
+      console.log("message: Invalid username or password");
+      return {
+        success: false,
+        message: "Invalid username or password",
+      };
+    }
 
-      const hashPassword = user?.password;
-      const isPasswordValid = bcrypt.compareSync(password, hashPassword);
+    // 2. ตรวจสอบรหัสผ่าน
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-      if (!isPasswordValid) {
-        throw new Error("Email หรือ Password ไม่ถูกต้อง");
-      }
+    if (!isPasswordValid) {
+      return {
+        success: false,
+        message: "Email หรือ Password ไม่ถูกต้อง",
+      };
+    }
 
-      const token = crypto.randomBytes(32).toString("hex");
+    // 3. สร้าง Token และบันทึก Session ลง Database
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + 4 * 60 * 60 * 1000);
 
-      const expiresAt = new Date(Date.now() + 4 * 60 * 60 * 1000);
+    await prisma.session.create({
+      data: {
+        id: token,
+        expiresAt,
+        createAt: new Date(),
+        userId: user.id,
+      },
+    });
 
-      await tx.session.create({
-        data: {
-          id: token,
-          expiresAt,
-          createAt: new Date(),
-          userId: user.id,
-        },
-      });
-
-      const cookieStore = await cookies();
-
-      cookieStore.set("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        expires: expiresAt,
-        path: "/",
-      });
+    // 4. เซ็ต Cookie (ย้ายออกมาอยู่นอก Database Transaction อย่างปลอดภัย)
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: expiresAt,
+      path: "/",
     });
   } catch (error) {
-    console.log(error);
+    console.error("Login Error:", error);
+    return { success: false, message: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ" };
   }
+
+  // 5. สั่ง Redirect ออกมานอก Try-Catch (สำคัญมาก)
   redirect("/");
 }
-
 export async function Register(formdata: FormData) {
   const name = formdata.get("name") as string;
   const lastName = formdata.get("lastName") as string;

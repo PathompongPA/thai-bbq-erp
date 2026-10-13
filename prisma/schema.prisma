@@ -16,23 +16,30 @@ model User {
   id       Int        @id @default(autoincrement())
   name     String?
   lastName String?
-  email    String
+  email    String     @unique
   password String
   roles    UserRole[]
   sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Role {
   id          Int              @id @default(autoincrement())
-  name        String
+  name        String           @unique
   users       UserRole[]
   permissions RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
 model Permission {
-  id    Int              @id @default(autoincrement())
-  name  String
-  roles RolePermission[]
+  id        Int              @id @default(autoincrement())
+  name      String           @unique
+  roles     RolePermission[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 }
 
 model RolePermission {
@@ -41,6 +48,9 @@ model RolePermission {
 
   role       Role?       @relation(fields: [roleId], references: [id])
   permission Permission? @relation(fields: [permissionId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([roleId, permissionId])
 }
@@ -52,13 +62,183 @@ model UserRole {
   user User? @relation(fields: [userId], references: [id])
   role Role? @relation(fields: [roleId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@id([userId, roleId])
 }
 
 model Session {
-  id        String   @id
+  id String @id
+
   expiresAt DateTime
   createAt  DateTime
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    Int
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Item {
+  id               Int     @id @default(autoincrement())
+  name             String? @unique
+  day_of_inventory Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  variants Item_Variant[]
+
+  item_typeId Int
+  itemType    Item_type? @relation(fields: [item_typeId], references: [id])
+
+  item_attributes Item_attribute[]
+
+  warehouseType    Warehouse_type? @relation(fields: [warehouse_typeId], references: [id])
+  warehouse_typeId Int?
+
+  itemCategory    Item_category? @relation(fields: [item_categoryId], references: [id])
+  item_categoryId Int?
+
+  supplier   supplier? @relation(fields: [supplierId], references: [id])
+  supplierId Int?
+}
+
+model Item_category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  item Item[]
+}
+
+model Item_attribute {
+  id          Int        @id @default(autoincrement())
+  item        Item?      @relation(fields: [itemId], references: [id])
+  itemId      Int?
+  attribute   Attribute? @relation(fields: [attributeId], references: [id])
+  attributeId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Item_type {
+  id    Int    @id @default(autoincrement())
+  code  String
+  name  String @unique
+  items Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Item_Variant {
+  id            Int     @id @default(autoincrement())
+  sku           String?
+  price         Int
+  minimum_stock Int?
+
+  itemId Int
+  item   Item? @relation(fields: [itemId], references: [id])
+
+  variantAttribute VariantAttribute[]
+
+  bill_of_material Bill_of_material?
+  bill_of_item     Bill_of_material_items[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VariantAttribute {
+  id          Int    @id @default(autoincrement())
+  value       String
+  variantId   Int
+  attributeId Int
+
+  variant   Item_Variant? @relation(fields: [variantId], references: [id])
+  attribute Attribute?    @relation(fields: [attributeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Attribute {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique
+  en_name          String?            @unique
+  variantAttribute VariantAttribute[]
+  item_attribute   Item_attribute[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bill_of_material {
+  id        Int           @id @default(autoincrement())
+  variantId Int           @unique
+  variant   Item_Variant? @relation(fields: [variantId], references: [id])
+
+  items Bill_of_material_items[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bill_of_material_items {
+  id Int @id @default(autoincrement())
+
+  bill_of_materialId Int
+  itemId             Int
+  variantId          Int
+  billOfMaterial     Bill_of_material? @relation(fields: [bill_of_materialId], references: [id])
+  variant            Item_Variant?     @relation(fields: [variantId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Unit {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model supplier {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  item Item[]
+}
+
+model Warehouse {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  phone Int?
+
+  warehouseType    Warehouse_type? @relation(fields: [warehouse_typeId], references: [id])
+  warehouse_typeId Int?
+}
+
+model Warehouse_type {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  item      Item[]
+  warehouse Warehouse[]
+
+  status   Status? @relation(fields: [statusId], references: [id])
+  statusId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Status {
+  id             Int              @id @default(autoincrement())
+  name           String           @unique
+  warehouse_type Warehouse_type[]
 }

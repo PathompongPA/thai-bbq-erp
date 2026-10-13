@@ -8,12 +8,12 @@
     "build": "next build",
     "start": "next start",
     "setup": "node setup",
-    "docker": "docker compose down && docker compose build && docker compose up -d",
+    "docker": "docker desktop start && docker compose down && docker compose build && docker compose up -d",
     "prisma": " npx prisma migrate reset --force && npx prisma migrate dev && npx prisma db seed && npx prisma generate",
     "lint": "eslint"
   },
   "dependencies": {
-    "@base-ui/react": "^1.7.0",
+    "@base-ui/react": "^1.8.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -22,7 +22,7 @@
     "@mui/material": "^9.4.0",
     "@mui/material-nextjs": "^9.4.0",
     "@mui/x-charts": "^9.11.1",
-    "@mui/x-data-grid": "^9.11.0",
+    "@mui/x-data-grid": "^9.12.0",
     "@prisma/adapter-mariadb": "^7.8.0",
     "@prisma/client": "^7.10.0",
     "bcrypt": "^6.0.0",

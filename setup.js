@@ -28,7 +28,7 @@ async function main() {
     const DB_PORT = await question("DB_PORT");
 
     const DATABASE_URL =
-        `mysql://root:${DB_ROOT_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}`;
+        `mysql://root:${DB_ROOT_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}?connection_limit=20`;
 
     const env = `APP_DEFAULT_EMAIL="${DEFAULT_EMAIL}"
 APP_DEFAULT_PASSWORD="${DEFAULT_PASSWORD}"

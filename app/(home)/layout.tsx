@@ -1,6 +1,6 @@
-import Navbar from "@/components/navbar.component"
 import { requireUser } from "@/lib/auth"
 import { Paper, Stack } from "@mui/material"
+import HomeShell from "./shell"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     await requireUser()
@@ -9,13 +9,13 @@ export default async function Layout({ children }: { children: React.ReactNode }
             component={Stack}
             direction={"column"}
             sx={{
-                height: "100vh",
-                justifyContent: "center",
-                alignItems: "center",
+                maxHeight: "100%",
+                height: "100%",
             }}
         >
-            <Navbar />
-            {children}
+            <HomeShell>
+                {children}
+            </HomeShell>
         </Paper>
     )
 };

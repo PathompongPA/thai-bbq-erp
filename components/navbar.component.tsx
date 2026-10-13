@@ -2,7 +2,6 @@
 import { AppBar, Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
-import SideMenu from "./side.menu.component";
 import Link from "next/link";
 import AccountButton from "./account.button.component";
 import NotificationButton from "./notification.button.component";
@@ -46,14 +45,20 @@ const mockupNotification = [
         }
     },
 ]
+export type Navbar_type = {
+    onClick?: () => void
+}
 
-export default function Navbar() {
+export default function Navbar({ onClick }: Navbar_type) {
     const [isOpenMenu, setIsOpenMenu] = useState(false)
     const toggleOpenMenu = () => setIsOpenMenu(!isOpenMenu)
     const notificationCount = mockupNotification.length
     return (
         <div className="">
-            <AppBar>
+            <AppBar
+                position="sticky"
+                sx={{ top: 0 }}
+            >
                 <Stack
                     direction={"row"}
                     sx={{
@@ -66,7 +71,7 @@ export default function Navbar() {
 
                         <Tooltip title="เมนู">
                             <IconButton
-                                onClick={toggleOpenMenu}
+                                onClick={onClick}
                                 sx={{
                                     color: "white"
                                 }}
@@ -84,7 +89,7 @@ export default function Navbar() {
                                 <Typography
                                     variant="h6"
                                     sx={{
-                                        fontWeight: 600,
+                                        // fontWeight: 600,
                                         color: "white"
                                     }}
                                 >
@@ -105,8 +110,6 @@ export default function Navbar() {
                         <AccountButton />
                     </Box>
                 </Stack>
-
-                <SideMenu open={isOpenMenu} onClose={toggleOpenMenu} />
 
             </AppBar>
         </div>
