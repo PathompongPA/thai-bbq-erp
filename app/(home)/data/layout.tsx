@@ -13,8 +13,8 @@ export default function Layout({ children }: prop) {
                 height: "100%",
                 width: "100%",
                 padding: {
-                    xs: 4
-                }
+                    xs: 2
+                },
             }}
         >
             {children}

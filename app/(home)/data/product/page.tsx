@@ -1,5 +1,5 @@
 import { Attributes_type, getAttributes } from "@/action/attribute.action";
-import { getItems, getItemTypes, ITEM_VARIANTS } from "@/action/item.action";
+import { countProduct, getItems, getItemTypes, ITEM_VARIANTS } from "@/action/item.action";
 import { master_data_category } from "@/action/masterdata.action";
 import { getSuppliers } from "@/action/supplier.action";
 import { getWarehouseTypes } from "@/action/warehouse.type.action";
@@ -22,9 +22,9 @@ export default async function TypePage({ searchParams }: Props) {
     const type_product = await getItemType("product")
     const item_variants: ITEM_VARIANTS[] = await getItems(type_product?.id, search)
 
-    const amount_item = item_variants.length
+    const totalProduct = await countProduct()
     const title = "สินค้า"
-    const subtitle = `ทั้งหมด ${amount_item} รายการ`
+    const subtitle = `ทั้งหมด ${totalProduct} รายการ`
 
     const item_type = await getItemTypes()
     const attribute: Attributes_type[] = await getAttributes()

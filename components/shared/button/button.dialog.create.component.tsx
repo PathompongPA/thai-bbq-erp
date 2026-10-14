@@ -22,6 +22,8 @@ export default function ButtonDialogCreate({ title = "เพิ่มราย�
                     onClick={on.open}
                     sx={{ gap: 1 }}
                     variant="contained"
+                    color="info"
+                    size="large"
                 >
                     <AddIcon />
                     {title}

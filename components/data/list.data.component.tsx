@@ -22,7 +22,7 @@ export default function ListData({ count }: prop) {
         {
             title: "วัตถุดิบ",
             subtitle: `${count.amount_material} รายการ`,
-            path: "/data/item/material"
+            path: "/data/materials"
         },
         {
             title: "หน่วย",

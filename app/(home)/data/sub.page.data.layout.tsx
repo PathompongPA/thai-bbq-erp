@@ -1,6 +1,7 @@
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Breadcrumbs, Link, Stack, Typography } from "@mui/material"
 import React from "react"
 import BackButton from "../../../components/back.button.component"
+import AutoBreadcrumbs from "@/components/shared/breadcrumbs/breadcrumbs.component"
 
 export type Sub_page_data_type = {
     title: string
@@ -20,6 +21,7 @@ export default function LayoutSubPageData({ buttonCreate, children, title, subti
                 top: 0,
             }}
         >
+            <AutoBreadcrumbs />
             <Stack
                 direction={"row"}
                 sx={{
@@ -31,13 +33,14 @@ export default function LayoutSubPageData({ buttonCreate, children, title, subti
                     direction={"row"}
                     spacing={2}
                 >
-                    <BackButton />
+                    {/* <BackButton /> */}
                     <Stack >
-                        <Typography variant="h4" >
+                        <Typography variant="h5" >
                             {title}
                         </Typography>
                         <Typography
                             variant="subtitle1"
+                            color="textDisabled"
                         >
                             {subtitle}
                         </Typography>

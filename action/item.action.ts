@@ -59,6 +59,8 @@ export async function createProduct(
   formData: FormData,
 ): Promise<Action_State_interface> {
   const name = formData.get("name") as string;
+  const name_en = formData.get("name_en") as string;
+  const code = formData.get("code") as string;
   const dayOfInventory = Number(formData.get("dayOfInventory"));
 
   const itemTypeId = Number(formData.get("itemTypeId"));
@@ -78,6 +80,8 @@ export async function createProduct(
       const item = await tx.item.create({
         data: {
           name,
+          name_en,
+          code,
           day_of_inventory: dayOfInventory,
 
           item_typeId: itemTypeId,

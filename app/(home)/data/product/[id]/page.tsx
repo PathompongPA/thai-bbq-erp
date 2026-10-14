@@ -17,7 +17,7 @@ export default async function ProductIdPage({ params }: prop) {
     const product = await getProduct(id, search)
     const productAttribute = await getProductAttribute(id)
     const amountVariant = Number(product?._count.variants)
-    const title = `สินค้า - ${product?.name}`
+    const title = `${product?.code} - ${product?.name} `
     const subtitle = `รุ่นย่อย ${product?._count.variants} รายการ`
 
     return (

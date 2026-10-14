@@ -84,6 +84,8 @@ model Session {
 model Item {
   id               Int     @id @default(autoincrement())
   name             String? @unique
+  name_en          String? @unique
+  code             String? @unique
   day_of_inventory Int?
 
   createdAt DateTime @default(now())
