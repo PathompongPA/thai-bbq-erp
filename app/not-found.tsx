@@ -11,6 +11,8 @@ export default function NotFound() {
                 justifyContent: "center",
                 alignItems: "center",
                 gap: 2,
+                bgcolor: "background.default",
+                color: "text.primary"
             }}
         >
             <Typography

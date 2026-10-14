@@ -3,10 +3,10 @@ import React from "react"
 import BackButton from "../../../components/back.button.component"
 
 export type Sub_page_data_type = {
-    children?: React.ReactNode
-    buttonCreate?: React.ReactNode
     title: string
     subtitle: string
+    children?: React.ReactNode
+    buttonCreate?: React.ReactNode
 }
 export default function LayoutSubPageData({ buttonCreate, children, title, subtitle }: Sub_page_data_type) {
     return (

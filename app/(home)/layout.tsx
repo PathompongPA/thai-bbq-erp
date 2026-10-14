@@ -11,6 +11,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
             sx={{
                 maxHeight: "100%",
                 height: "100%",
+                bgcolor: "background.default"
             }}
         >
             <HomeShell>

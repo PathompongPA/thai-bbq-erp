@@ -200,8 +200,10 @@ model Bill_of_material_items {
 }
 
 model Unit {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id      Int    @id @default(autoincrement())
+  name    String @unique
+  name_en String @unique
+  symbol  String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
