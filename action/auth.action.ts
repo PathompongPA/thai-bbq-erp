@@ -1,17 +1,20 @@
 "use server";
-
+import { Action_State_interface } from "./index";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function login(formData: FormData) {
+export async function login(
+  state: Action_State_interface,
+  formData: FormData,
+): Promise<Action_State_interface> {
   const userName = formData.get("user") as string;
   const password = formData.get("password") as string;
 
   if (!userName || !password) {
-    return { success: false, message: "กรุณากรอกข้อมูลให้ครบถ้วน" };
+    return { ...state, success: false, error: "กรุณากรอกข้อมูลให้ครบถ้วน" };
   }
 
   try {
@@ -23,8 +26,9 @@ export async function login(formData: FormData) {
     if (!user) {
       console.log("message: Invalid username or password");
       return {
+        ...state,
         success: false,
-        message: "Invalid username or password",
+        error: "Invalid username or password",
       };
     }
 
@@ -33,8 +37,9 @@ export async function login(formData: FormData) {
 
     if (!isPasswordValid) {
       return {
+        ...state,
         success: false,
-        message: "Email หรือ Password ไม่ถูกต้อง",
+        error: "Email หรือ Password ไม่ถูกต้อง",
       };
     }
 
@@ -62,7 +67,11 @@ export async function login(formData: FormData) {
     });
   } catch (error) {
     console.error("Login Error:", error);
-    return { success: false, message: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ" };
+    return {
+      ...state,
+      success: false,
+      error: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
+    };
   }
 
   // 5. สั่ง Redirect ออกมานอก Try-Catch (สำคัญมาก)

@@ -1,4 +1,4 @@
-import { CircularProgress, Modal } from "@mui/material";
+import { Box, CircularProgress, Dialog, Modal } from "@mui/material";
 
 type prop = {
     open?: boolean
@@ -6,11 +6,21 @@ type prop = {
 
 export default function Loading({ open = false }: prop) {
     return (
-        <Modal
+        <Dialog
             open={open}
+            slotProps={{
+                paper: {
+                    elevation: 0,
+                    sx: {
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                    },
+                },
+            }}
         >
+
             <CircularProgress />
-        </Modal>
+        </Dialog>
     )
 
 };

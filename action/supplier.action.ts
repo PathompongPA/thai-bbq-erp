@@ -6,6 +6,11 @@ import { prisma } from "@/lib/prisma";
 export async function getSuppliers() {
   return await prisma.supplier.findMany();
 }
+export async function getSupplier(id: number) {
+  return await prisma.supplier.findUnique({
+    where: { id },
+  });
+}
 
 export async function createSupplier(
   state: Action_State_interface,

@@ -1,6 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material"
 import React from "react"
-import BackButton from "../../../components/back.button.component"
 
 export type Sub_page_data_type = {
     title: string
@@ -31,13 +30,13 @@ export default function LayoutSubPageData({ buttonCreate, children, title, subti
                     direction={"row"}
                     spacing={2}
                 >
-                    <BackButton />
                     <Stack >
-                        <Typography variant="h4" >
+                        <Typography variant="h5" >
                             {title}
                         </Typography>
                         <Typography
-                            variant="subtitle1"
+                            variant="subtitle2"
+                            color="textDisabled"
                         >
                             {subtitle}
                         </Typography>

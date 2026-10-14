@@ -5,14 +5,16 @@ import { Box, Button, Tooltip } from "@mui/material"
 import DialogForm from "../dialog/dialog.form.component"
 import AddIcon from '@mui/icons-material/Add';
 import { Action_State_interface } from "@/action";
+import EditIcon from '@mui/icons-material/Edit';
 
 type prop = {
     title?: string
     children?: React.ReactNode
     onSubmit: (state: Action_State_interface, formdata: FormData) => Promise<Action_State_interface>
+    variant?: "create" | "update"
 }
 
-export default function ButtonDialogCreate({ title = "เพิ่มรายการ", onSubmit, children }: prop) {
+export default function ButtonDialogForm({ title = "เพิ่มรายการ", variant = "create", onSubmit, children }: prop) {
     const { isOpen, on } = useDialog()
     return (
         <Box >
@@ -20,10 +22,13 @@ export default function ButtonDialogCreate({ title = "เพิ่มราย�
                 <Button
                     fullWidth
                     onClick={on.open}
-                    sx={{ gap: 1 }}
-                    variant="contained"
+                    variant="outlined"
+                    endIcon={
+                        variant === "create" ?
+                            <AddIcon fontSize="large" /> :
+                            <EditIcon />
+                    }
                 >
-                    <AddIcon />
                     {title}
                 </Button>
             </Tooltip>
@@ -37,6 +42,6 @@ export default function ButtonDialogCreate({ title = "เพิ่มราย�
             >
                 {children}
             </DialogForm>
-        </Box>
+        </Box >
     )
 };

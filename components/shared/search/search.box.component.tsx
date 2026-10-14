@@ -3,10 +3,10 @@
 import { Button, IconButton, InputAdornment, Stack, TextField } from "@mui/material"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import SearchIcon from "@mui/icons-material/Search"
-import CloseIcon from '@mui/icons-material/Close';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmptyResult from "./empty.result.search.component";
 import NotFoundResult from "./not.found.result.component";
+import ReplayIcon from '@mui/icons-material/Replay';
 
 type prop = {
     ButtonCreate: React.ReactNode
@@ -21,6 +21,10 @@ export default function SearchBox({ amountResult, ButtonCreate, Results }: prop)
     const search = searchParams.get("search") ?? ""
     const [state, setState] = useState<string>(search)
 
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setState(searchParams.get("search") ?? "");
+    }, [searchParams]);
     const isNotFound = amountResult <= 0
 
     const onChange = (_new: string) => { setState(_new) }
@@ -46,7 +50,7 @@ export default function SearchBox({ amountResult, ButtonCreate, Results }: prop)
         <Stack
             sx={{ height: "100%" }}
             direction={"column"}
-            spacing={2}
+            spacing={3}
         >
 
             <Stack direction={"row"} spacing={2}>
@@ -55,6 +59,7 @@ export default function SearchBox({ amountResult, ButtonCreate, Results }: prop)
                     fullWidth
                     size="small"
                     value={state}
+                    name="search"
                     onChange={(e) => onChange(e.target.value)}
                     onBlur={() => { setSearch(state) }}
                     onKeyDown={(e) => {
@@ -71,10 +76,10 @@ export default function SearchBox({ amountResult, ButtonCreate, Results }: prop)
                                 </InputAdornment>
                             ),
                             endAdornment: (
-                                state &&
+                                search &&
                                 <InputAdornment position="end">
                                     <IconButton onClick={clearSearch}>
-                                        <CloseIcon />
+                                        <ReplayIcon />
                                     </IconButton>
                                 </InputAdornment>
                             )
@@ -83,7 +88,7 @@ export default function SearchBox({ amountResult, ButtonCreate, Results }: prop)
                 />
 
                 <Button
-                    variant="contained"
+                    variant="outlined"
                     sx={{ gap: .5 }}
                 >
                     ค้นหา

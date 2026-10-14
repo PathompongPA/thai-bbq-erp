@@ -1,13 +1,9 @@
-import { Box, Paper } from "@mui/material"
+import { Box, Stack } from "@mui/material"
 
 export default function Layout({ children }: LayoutProps<"/">) {
     return (
-        <Box
-            component={Paper}
-            sx={{
-            }}
-        >
+        <Stack sx={{}}>
             {children}
-        </Box>
+        </Stack>
     )
 };

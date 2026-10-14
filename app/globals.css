@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+html,
 body {
-    box-sizing: content-box;
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    box-sizing: border-box;
 }

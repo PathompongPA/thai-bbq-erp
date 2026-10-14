@@ -1,10 +1,10 @@
 import { createAttribute } from "@/action/attribute.action";
-import ButtonDialogCreate from "@/components/shared/button/button.dialog.create.component";
+import ButtonDialogForm from "@/components/shared/button/button.dialog.create.component";
 import { TextField } from "@mui/material";
 
 export default function CreateAttributeButton() {
     return (
-        <ButtonDialogCreate
+        <ButtonDialogForm
             onSubmit={createAttribute}
         >
             <TextField
@@ -12,7 +12,7 @@ export default function CreateAttributeButton() {
                 label="คุณสมบัติ"
             />
 
-        </ButtonDialogCreate>
+        </ButtonDialogForm>
     )
 
 };

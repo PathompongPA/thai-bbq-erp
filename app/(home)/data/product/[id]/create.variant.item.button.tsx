@@ -1,32 +1,28 @@
 "use client"
 
 import { createItemVariant } from "@/action/item.variant.action";
-import ButtonDialogCreate from "@/components/shared/button/button.dialog.create.component";
-import { Attribute } from "@/generated/prisma/client";
+import ButtonDialogForm from "@/components/shared/button/button.dialog.create.component";
+import { Prisma } from "@/generated/prisma/client";
 import { Slider, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
 type prop = {
     itemId: number | undefined,
     itemName: string | undefined | null
-    attributes: (Attribute | null)[]
+    itemAttribute: Prisma.Item_attributeGetPayload<{ include: { attribute: true } }>[] | null
 }
 
-export default function CreateItemVariantButton({ itemId, itemName, attributes }: prop) {
+export default function CreateItemVariantButton({ itemId, itemName, itemAttribute }: prop) {
     const [minimumStock, setMinimumStock] = useState<number>(20)
 
     const changeMinimumStock = (e: Event, newValue: number) => setMinimumStock(newValue)
 
     return (
-        <ButtonDialogCreate
-            title="รุ่นย่อย"
+        <ButtonDialogForm
+            title="รูปแบบสินค้า"
             onSubmit={createItemVariant}
         >
-            <TextField
-                value={itemId}
-                name="itemId"
-                hidden
-            />
+            <TextField value={itemId} name="itemId" hidden />
 
             <TextField
                 variant="filled"
@@ -37,12 +33,12 @@ export default function CreateItemVariantButton({ itemId, itemName, attributes }
             />
 
             <Typography>ข้อมูล</Typography>
-            {attributes.map((_item, key) =>
+            {itemAttribute?.map((_itemAttribute, key) =>
                 <TextField
                     key={key}
-                    label={_item?.name}
-                    name={`attribute_${_item?.id}`}
-                    defaultValue={_item?.name}
+                    label={_itemAttribute?.attribute?.name}
+                    name={`attribute_${_itemAttribute?.attribute?.id}`}
+                    required
                 />
             )}
 
@@ -50,12 +46,13 @@ export default function CreateItemVariantButton({ itemId, itemName, attributes }
                 type="number"
                 label="ราคา"
                 name="price"
-                defaultValue={129}
+                defaultValue={0}
             />
 
             <Typography>สต๊อกขั้นต่ำ {minimumStock ?? 0} ชิ้น</Typography>
             <TextField
                 hidden
+                value={minimumStock}
                 name="minimumStock"
             />
             <Slider
@@ -65,6 +62,6 @@ export default function CreateItemVariantButton({ itemId, itemName, attributes }
                 max={100}
             />
 
-        </ButtonDialogCreate>
+        </ButtonDialogForm>
     )
 };

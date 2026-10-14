@@ -1,22 +1,21 @@
 import { requireUser } from "@/lib/auth"
-import { Paper, Stack } from "@mui/material"
+import { Box, Stack } from "@mui/material"
 import HomeShell from "./shell"
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     await requireUser()
     return (
-        <Paper
+        <Box
             component={Stack}
             direction={"column"}
             sx={{
-                maxHeight: "100%",
-                height: "100%",
-                bgcolor: "background.default"
+                minHeight: "100vh",
+                height: "screen",
             }}
         >
             <HomeShell>
                 {children}
             </HomeShell>
-        </Paper>
+        </Box>
     )
 };

@@ -1,5 +1,5 @@
-import { Attributes_type, getAttributes } from "@/action/attribute.action";
-import { getItems, getItemTypes, ITEM_VARIANTS } from "@/action/item.action";
+import { getAllAttribute } from "@/action/attribute.action";
+import { countProduct, getItemTypes, getProducts } from "@/action/item.action";
 import { master_data_category } from "@/action/masterdata.action";
 import { getSuppliers } from "@/action/supplier.action";
 import { getWarehouseTypes } from "@/action/warehouse.type.action";
@@ -7,7 +7,6 @@ import CreateItemButton from "@/components/data/button.create.variant.component"
 import ListProducts from "@/components/data/list.item.variant.component";
 import SearchBox from "@/components/shared/search/search.box.component";
 import LayoutSubPageData from "../sub.page.data.layout";
-import { getItemType } from "@/action/item.type.action";
 
 type Props = {
     params: Promise<{ type: master_data_category }>
@@ -16,21 +15,23 @@ type Props = {
     }>
 };
 
-export default async function TypePage({ searchParams }: Props) {
+export default async function productPage({ searchParams }: Props) {
     const search = (await searchParams).search ?? ""
 
-    const type_product = await getItemType("product")
-    const item_variants: ITEM_VARIANTS[] = await getItems(type_product?.id, search)
+    // const type_product = await getItemType("product")
+    const products = await getProducts(search)
 
-    const amount_item = item_variants.length
+    const totalProduct = await countProduct()
     const title = "สินค้า"
-    const subtitle = `ทั้งหมด ${amount_item} รายการ`
+    const subtitle = `ทั้งหมด ${totalProduct} รายการ`
 
     const item_type = await getItemTypes()
-    const attribute: Attributes_type[] = await getAttributes()
+    const attributes = await getAllAttribute()
 
     const warehouse_type = await getWarehouseTypes()
     const suppliers = await getSuppliers()
+
+    console.log("item : ", attributes);
 
     return (
         <LayoutSubPageData
@@ -38,29 +39,30 @@ export default async function TypePage({ searchParams }: Props) {
             subtitle={subtitle}
             buttonCreate={
                 <CreateItemButton
+                    titleBtn="สินค้า"
                     warehouse_type={warehouse_type}
                     itemTypes={item_type}
-                    attribute={attribute}
+                    attribute={attributes}
                     suppliers={suppliers}
                 />
             }
 
         >
             <SearchBox
-                amountResult={item_variants.length}
+                amountResult={products.length}
                 ButtonCreate={
                     <CreateItemButton
                         titleBtn={`เพิ่ม ${search}`}
                         name={search}
                         suppliers={suppliers}
                         itemTypes={item_type}
-                        attribute={attribute}
+                        attribute={attributes}
                         warehouse_type={warehouse_type}
                     />
                 }
                 Results={
                     <ListProducts
-                        item_variant={item_variants}
+                        item_variant={products}
                     />
                 }
             />

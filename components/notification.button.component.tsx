@@ -85,7 +85,7 @@ export default function NotificationButton({
                     horizontal: "center",
                 }}
                 slotProps={{
-                    paper: {
+                    Box: {
                         sx: {
                             width: {
                                 xs: "100%",

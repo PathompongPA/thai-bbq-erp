@@ -1,10 +1,8 @@
-import { Box, Paper } from "@mui/material";
+import { Box, } from "@mui/material";
 
 export default async function HomePage() {
     return (
-        <Box
-            component={Paper}
-        >
+        <Box >
             Dash board
         </Box>
     )

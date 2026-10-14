@@ -2,10 +2,10 @@
 import { createProduct } from "@/action/item.action";
 import { Autocomplete, Checkbox, FormControlLabel, FormGroup, Input, Slider, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography, } from "@mui/material";
 
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
 import type { Item_type, Warehouse_type, supplier } from "@/generated/prisma/client";
 import { Attributes_type } from "@/action/attribute.action";
-import ButtonDialogCreate from "../shared/button/button.dialog.create.component";
+import ButtonDialogForm from "../shared/button/button.dialog.create.component";
 
 type prop = {
     itemTypes: Item_type[]
@@ -14,12 +14,13 @@ type prop = {
     suppliers: supplier[]
     name?: string
     titleBtn?: string
+    isProduct?: boolean
 }
 
-export default function CreateItemButton({ titleBtn = "เพิ่มรายการ", name = "", itemTypes, attribute, warehouse_type, suppliers }: prop) {
+export default function CreateItemButton({ isProduct = true, titleBtn = "เพิ่มรายการ", name = "", itemTypes, attribute, warehouse_type, suppliers }: prop) {
 
     const [dayOfInventory, setDayOfInventory] = useState<number>(30)
-    const [itemtype, setItemType] = useState<Item_type>(itemTypes[0])
+    const [itemtype, setItemType] = useState<Item_type>(isProduct ? itemTypes[0] : itemTypes[1])
     const [warehouseTypeId, setWarehouseTypeId] = useState<number | undefined>(undefined)
     const [supplierId, setSupplierId] = useState<number | undefined>(undefined)
 
@@ -29,7 +30,7 @@ export default function CreateItemButton({ titleBtn = "เพิ่มราย�
     const onChangeSupplier = (newState: number | undefined) => { setSupplierId(newState) }
 
     return (
-        <ButtonDialogCreate
+        <ButtonDialogForm
             title={titleBtn}
             onSubmit={createProduct}
         >
@@ -58,14 +59,30 @@ export default function CreateItemButton({ titleBtn = "เพิ่มราย�
             <Typography> ข้อมูล</Typography>
             <Stack
                 spacing={{ xs: 1, sm: 1 }}
-                direction={{ md: "row" }}
+            // direction={{ xs: "row" }}
             >
                 <TextField
-                    label="ชื่อ"
+                    required
+                    label="ชื่อภาษาไทย"
                     name="name"
                     defaultValue={name}
                     fullWidth
                 />
+
+                <TextField
+                    label="ชื่ออังกฤษ"
+                    name="name_en"
+                    defaultValue={name}
+                    fullWidth
+                />
+
+                <TextField
+                    label="ชื่อย่อ"
+                    name="code"
+                    defaultValue={name}
+                    fullWidth
+                />
+
 
                 <Input name="warehouseTypeId" value={warehouseTypeId || 0} hidden />
                 <Autocomplete
@@ -132,7 +149,7 @@ export default function CreateItemButton({ titleBtn = "เพิ่มราย�
                 )}
             </FormGroup>
 
-        </ButtonDialogCreate>
+        </ButtonDialogForm>
     )
 
 };

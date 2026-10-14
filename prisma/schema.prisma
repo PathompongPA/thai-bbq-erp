@@ -84,7 +84,10 @@ model Session {
 model Item {
   id               Int     @id @default(autoincrement())
   name             String? @unique
+  name_en          String? @unique
+  code             String? @unique
   day_of_inventory Int?
+  isActive         Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -138,6 +141,7 @@ model Item_Variant {
   sku           String?
   price         Int
   minimum_stock Int?
+  isActive      Boolean @default(true)
 
   itemId Int
   item   Item? @relation(fields: [itemId], references: [id])
@@ -165,11 +169,26 @@ model VariantAttribute {
 }
 
 model Attribute {
-  id               Int                @id @default(autoincrement())
-  name             String             @unique
-  en_name          String?            @unique
+  id   Int     @id @default(autoincrement())
+  name String  @unique
+  code String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   variantAttribute VariantAttribute[]
   item_attribute   Item_attribute[]
+  attributeValue   AttributeValue[]
+}
+
+model AttributeValue {
+  id Int @id @default(autoincrement())
+
+  value String
+  code  String
+
+  attributeId Int?
+  attribute   Attribute? @relation(fields: [attributeId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -190,13 +209,21 @@ model Bill_of_material_items {
   id Int @id @default(autoincrement())
 
   bill_of_materialId Int
-  itemId             Int
-  variantId          Int
   billOfMaterial     Bill_of_material? @relation(fields: [bill_of_materialId], references: [id])
-  variant            Item_Variant?     @relation(fields: [variantId], references: [id])
+
+  materialId Int
+  variant    Item_Variant? @relation(fields: [materialId], references: [id])
+
+  quantity Decimal @db.Decimal(3, 3)
+
+  note     String?
+  sequence Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  unitId Int?
+  unit   Unit? @relation(fields: [unitId], references: [id])
 }
 
 model Unit {
@@ -207,6 +234,8 @@ model Unit {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  BOM Bill_of_material_items[]
 }
 
 model supplier {

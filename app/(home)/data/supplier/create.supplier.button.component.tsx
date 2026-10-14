@@ -1,10 +1,10 @@
 import { createSupplier } from "@/action/supplier.action";
-import ButtonDialogCreate from "@/components/shared/button/button.dialog.create.component";
+import ButtonDialogForm from "@/components/shared/button/button.dialog.create.component";
 import { TextField } from "@mui/material";
 
 export default function CreateSupplierButton() {
     return (
-        <ButtonDialogCreate
+        <ButtonDialogForm
             title="เพิ่ม Supplier"
             onSubmit={createSupplier}
         >
@@ -12,6 +12,6 @@ export default function CreateSupplierButton() {
                 label="ชื่อ"
                 name="name"
             />
-        </ButtonDialogCreate>
+        </ButtonDialogForm>
     )
 };

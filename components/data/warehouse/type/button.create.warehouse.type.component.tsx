@@ -1,6 +1,6 @@
 "use client"
 import { TextField } from "@mui/material"
-import ButtonDialogCreate from "@/components/shared/button/button.dialog.create.component"
+import ButtonDialogForm from "@/components/shared/button/button.dialog.create.component"
 import { createWarehouseType } from "@/action/warehouse.type.action"
 
 type prop = {
@@ -10,7 +10,7 @@ type prop = {
 
 export default function CreateWarehouseTypeButton({ title = "เพิ่มประเภทการจัดเก็บ", name }: prop) {
     return (
-        <ButtonDialogCreate
+        <ButtonDialogForm
             title={title}
             onSubmit={createWarehouseType}
         >
@@ -19,7 +19,7 @@ export default function CreateWarehouseTypeButton({ title = "เพิ่มป�
                 label="ชื่อ"
                 defaultValue={name}
             />
-        </ButtonDialogCreate>
+        </ButtonDialogForm>
     )
 
 };

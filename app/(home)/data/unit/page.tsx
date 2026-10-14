@@ -20,7 +20,7 @@ export default async function UnitPage({ searchParams }: prop) {
     console.log("unit : ", units);
 
     return (
-        <Box>
+        <Box sx={{ height: "100%" }}>
             <LayoutSubPageData
                 title={title}
                 subtitle={subtitle}

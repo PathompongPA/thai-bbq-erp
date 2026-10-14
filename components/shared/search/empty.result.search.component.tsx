@@ -5,7 +5,7 @@ export default function EmptyResult() {
     return (
         <Stack
             direction={"column"}
-            sx={{ height: "100%", alignItems: "center", justifyContent: "center" }}
+            sx={{ padding: 4, height: "100%", alignItems: "center", justifyContent: "center" }}
             spacing={2}
         >
             <ErrorIcon

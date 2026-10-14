@@ -16,7 +16,7 @@ type props = {
     onClose?: () => void
 }
 
-export default function DialogForm({ title, children, isOpen = false, onSubmit, onToggle, onClose }: props) {
+export default function DialogForm({ title, children, isOpen = false, onSubmit, onClose }: props) {
 
     const [state, formAction, padding] = useActionState(onSubmit, action_init_state)
     const router = useRouter()
@@ -39,7 +39,7 @@ export default function DialogForm({ title, children, isOpen = false, onSubmit, 
 
                 <DialogTitle> {title}</DialogTitle>
 
-                <DialogContent >
+                <DialogContent sx={{ overflow: "auto" }} >
                     <Stack sx={{ gap: 2, py: 1 }}>
                         {children}
                     </Stack>
@@ -54,7 +54,7 @@ export default function DialogForm({ title, children, isOpen = false, onSubmit, 
 
                 <DialogActions>
                     <Button
-                        onClick={onToggle}
+                        onClick={onClose}
                     >
                         ยกเลิก
                     </Button>
@@ -68,6 +68,8 @@ export default function DialogForm({ title, children, isOpen = false, onSubmit, 
 
                 <Backdrop
                     open={padding}
+                    sx={{ position: "absolute", zIndex: 1 }}
+
                 >
                     <CircularProgress />
                 </Backdrop>

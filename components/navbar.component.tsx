@@ -1,7 +1,7 @@
 "use client"
 import { AppBar, Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from "react";
+// import { useState } from "react";
 import Link from "next/link";
 import AccountButton from "./account.button.component";
 import NotificationButton from "./notification.button.component";
@@ -50,14 +50,16 @@ export type Navbar_type = {
 }
 
 export default function Navbar({ onClick }: Navbar_type) {
-    const [isOpenMenu, setIsOpenMenu] = useState(false)
-    const toggleOpenMenu = () => setIsOpenMenu(!isOpenMenu)
+    // const [isOpenMenu, setIsOpenMenu] = useState(false)
+    // const toggleOpenMenu = () => setIsOpenMenu(!isOpenMenu)
     const notificationCount = mockupNotification.length
     return (
         <div className="">
             <AppBar
-                position="sticky"
+                position="fixed"
                 sx={{ top: 0 }}
+                variant="outlined"
+                color="default"
             >
                 <Stack
                     direction={"row"}
@@ -73,7 +75,7 @@ export default function Navbar({ onClick }: Navbar_type) {
                             <IconButton
                                 onClick={onClick}
                                 sx={{
-                                    color: "white"
+                                    color: "text.default"
                                 }}
                             >
                                 <MenuIcon />
@@ -87,11 +89,8 @@ export default function Navbar({ onClick }: Navbar_type) {
                                 variant="text"
                             >
                                 <Typography
-                                    variant="h6"
-                                    sx={{
-                                        // fontWeight: 600,
-                                        color: "white"
-                                    }}
+                                    variant="h5"
+                                    color="textPrimary"
                                 >
                                     Thai bbq 1999
                                 </Typography>

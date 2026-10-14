@@ -15,6 +15,10 @@ import { prisma } from "@/lib/prisma";
 //   return [items, total];
 // }
 
+export async function getWarehouseType(id: number) {
+  return await prisma.warehouse_type.findFirst({ where: { id } });
+}
+
 export async function getWarehouseTypes(search: string = "") {
   return await prisma.warehouse_type.findMany({
     where: {

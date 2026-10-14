@@ -1,13 +1,12 @@
 "use client"
 
 import { Register } from "@/action/auth.action";
-import { Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function RegisterForm() {
     return (
         <Box
-            component={Paper}
             sx={{
                 padding: 2,
                 gap: 2,
@@ -17,7 +16,12 @@ export default function RegisterForm() {
                 <Stack
                     sx={{
                         gap: 2,
-                        padding: 2,
+                        padding: 4,
+                        bgcolor: "divider",
+                        borderRadius: 4,
+                        width: {
+                            xs: 300,
+                        }
                     }}
                 >
 

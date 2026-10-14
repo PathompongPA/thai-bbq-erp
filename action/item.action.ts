@@ -19,6 +19,28 @@ export type ITEM_VARIANTS = Prisma.ItemGetPayload<{
   };
 }>;
 
+export async function toggleActiveItem(
+  state: Action_State_interface,
+  formData: FormData,
+): Promise<Action_State_interface> {
+  try {
+    const id = Number(formData.get("itemId"));
+    await prisma.$transaction(async (tx) => {
+      const variant = await tx.item.findFirst({
+        where: { id: id },
+      });
+      await tx.item.update({
+        where: { id: id },
+        data: {
+          isActive: !variant?.isActive,
+        },
+      });
+    });
+    return { ...state };
+  } catch (error) {
+    return { ...state, success: false, error: error };
+  }
+}
 export async function getItems(
   item_type?: number,
   search: string = "",
@@ -59,11 +81,13 @@ export async function createProduct(
   formData: FormData,
 ): Promise<Action_State_interface> {
   const name = formData.get("name") as string;
+  const name_en = formData.get("name_en") as string;
+  const code = formData.get("code") as string;
   const dayOfInventory = Number(formData.get("dayOfInventory"));
 
   const itemTypeId = Number(formData.get("itemTypeId"));
   const warehouseTypeId = Number(formData.get("warehouseTypeId"));
-  const supplierId = formData.get("supplierId") as string;
+  const supplierId = Number(formData.get("supplierId"));
   const attributeIds = formData.getAll("attributeIds");
 
   try {
@@ -78,10 +102,13 @@ export async function createProduct(
       const item = await tx.item.create({
         data: {
           name,
+          name_en,
+          code,
           day_of_inventory: dayOfInventory,
 
           item_typeId: itemTypeId,
           warehouse_typeId: warehouseTypeId,
+          supplierId: supplierId,
         },
       });
       await tx.item_attribute.createMany({
@@ -114,26 +141,47 @@ export async function getProductAttribute(itemId: number) {
   return result.map((item) => item.attribute);
 }
 
-export async function getProduct(productId: number, search: string = "") {
-  return await prisma.item.findFirst({
-    where: {
-      id: Number(productId),
-    },
-    include: {
-      variants: {
-        where: {
-          OR: [
-            {
-              sku: { contains: search },
+export async function getProduct(productId: number) {
+  return await prisma.$transaction(async (tx) => {
+    const item_type_product = await tx.item_type.findFirst({
+      where: {
+        name: "product",
+      },
+    });
+    return await prisma.item.findFirst({
+      where: {
+        id: productId,
+        item_typeId: item_type_product?.id,
+      },
+      include: {
+        itemType: true,
+        warehouseType: true,
+        supplier: true,
+        item_attributes: true,
+      },
+    });
+  });
+}
+
+export async function getProducts(search: string = "") {
+  return await prisma.$transaction(async (tx) => {
+    const item_type_product = await tx.item_type.findFirst({
+      where: {
+        name: "product",
+      },
+    });
+    return await prisma.item.findMany({
+      where: {
+        item_typeId: item_type_product?.id,
+        OR: [
+          {
+            name: {
+              contains: search,
             },
-          ],
-        },
+          },
+        ],
       },
-      _count: {
-        select: {
-          variants: true,
-        },
-      },
-    },
+      include: { variants: true, itemType: true },
+    });
   });
 }

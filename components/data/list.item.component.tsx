@@ -1,5 +1,5 @@
 "use client"
-import { Box, Card, CardHeader, CardMedia, Paper, } from "@mui/material";
+import { Box, Card, CardHeader, CardMedia, } from "@mui/material";
 import InfoIcon from '@mui/icons-material/Info';
 
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
@@ -21,7 +21,7 @@ export default function ListItems({ items, itemType }: props) {
         setValue(newValue)
     }
     return (
-        <Paper className="">
+        <Box className="">
             <ToggleButtonGroup
                 value={value}
                 exclusive
@@ -64,7 +64,7 @@ export default function ListItems({ items, itemType }: props) {
             </Box>
 
             <Box></Box>
-        </Paper>
+        </Box>
 
     )
 

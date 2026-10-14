@@ -1,4 +1,5 @@
-import { Box } from "@mui/material"
+import AutoBreadcrumbs from "@/components/shared/breadcrumbs/breadcrumbs.component"
+import { Stack } from "@mui/material"
 import React from "react"
 
 type prop = {
@@ -6,19 +7,21 @@ type prop = {
 }
 export default function Layout({ children }: prop) {
     return (
-        <Box
+        <Stack
             sx={{
                 flex: 1,
                 minHeight: 0,
                 height: "100%",
                 width: "100%",
                 padding: {
-                    xs: 4
-                }
+                    xs: 2
+                },
             }}
+            spacing={2}
         >
+            <AutoBreadcrumbs />
             {children}
-        </Box>
+        </Stack>
     )
 
 };

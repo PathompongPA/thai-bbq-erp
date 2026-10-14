@@ -9,7 +9,8 @@ export default function useSideBar({ default_open = true }: Use_side_bar_type) {
     const [open, setOpen] = useState(default_open)
 
     const on = {
-        toggle: () => setOpen((state) => !state)
+        toggle: () => setOpen((state) => !state),
+        close: () => setOpen(false)
     }
     return {
         open,

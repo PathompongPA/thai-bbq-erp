@@ -83,7 +83,9 @@ async function main() {
 
     const item_pork_ripe = await tx.item.create({
       data: {
-        name: "Pork ripe",
+        name: "ซี่โครง BBQ",
+        name_en: "Pork Ribs BBQ",
+        code: "RIB",
         day_of_inventory: 30,
 
         item_typeId: item_type_product.id,

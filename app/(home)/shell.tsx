@@ -13,7 +13,7 @@ export default function HomeShell({ children }: Layout_prop) {
     return (
         <Stack
             direction={"column"}
-            sx={{ minHeight: 0, height: "100%", width: "100%" }}
+            sx={{ minHeight: "100vh", height: "100%", width: "100%", }}
         >
             <Navbar onClick={on.toggle} />
 
@@ -29,10 +29,15 @@ export default function HomeShell({ children }: Layout_prop) {
             >
                 <SideMenu
                     open={open}
-                    onClose={on.toggle}
+                    onToggle={on.toggle}
+                    onClose={on.close}
                 />
                 <Box
-                    sx={{ width: "100%" }}
+                    sx={{
+                        width: "100%",
+                        color: "textPrimary",
+                        paddingTop: 8
+                    }}
                 >
                     {children}
                 </Box>

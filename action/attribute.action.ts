@@ -16,12 +16,27 @@ export async function countAttribute() {
   return await prisma.attribute.count();
 }
 
-export async function getAttributes(
-  search: string = "",
-): Promise<Attributes_type[]> {
+export async function getAllAttribute(search = "") {
   return await prisma.attribute.findMany({
     where: {
-      OR: [{ name: { contains: search } }],
+      OR: [
+        {
+          name: {
+            contains: search,
+          },
+        },
+      ],
+    },
+  });
+}
+
+export async function getAttributes(variantId?: number) {
+  return await prisma.variantAttribute.findMany({
+    where: {
+      variantId,
+    },
+    include: {
+      attribute: true,
     },
   });
 }
