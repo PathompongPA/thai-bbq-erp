@@ -27,6 +27,11 @@ export async function getAllAttribute(search = "") {
         },
       ],
     },
+    include: {
+      attributeValue: true,
+      item_attribute: true,
+      variantAttribute: true,
+    },
   });
 }
 

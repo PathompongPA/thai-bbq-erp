@@ -1,8 +1,9 @@
-import { Attributes_type, countAttribute, getAllAttribute, getAttributes } from "@/action/attribute.action";
+import { countAttribute, getAllAttribute } from "@/action/attribute.action";
 import LayoutSubPageData from "@/app/(home)/data/sub.page.data.layout";
 import SearchBox from "@/components/shared/search/search.box.component";
-import ListAttribute from "./list.attribute.component";
+import Attributes from "./list.attribute.component";
 import CreateAttributeButton from "./create.attribute.component";
+import { Prisma } from "@/generated/prisma/client";
 type prop = {
     params: Promise<{
         search: string
@@ -10,7 +11,13 @@ type prop = {
 }
 export default async function AttributePage({ params }: prop) {
     const { search } = await params
-    const listAttribute: Attributes_type[] = await getAllAttribute(search)
+    const listAttribute: Prisma.AttributeGetPayload<{
+        include: {
+            attributeValue: true,
+            item_attribute: true,
+            variantAttribute: true
+        }
+    }>[] = await getAllAttribute(search)
     const total_attribute = await countAttribute()
     const amount_attribute = listAttribute.length
     const title = "คุณสมบัติ"
@@ -31,7 +38,7 @@ export default async function AttributePage({ params }: prop) {
                     <CreateAttributeButton />
                 }
                 Results={
-                    <ListAttribute attributes={listAttribute} />
+                    <Attributes attributes={listAttribute} />
                 }
             />
 

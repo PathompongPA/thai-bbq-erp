@@ -169,7 +169,8 @@ model VariantAttribute {
 }
 
 model Attribute {
-  id   Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+
   name String  @unique
   code String? @unique
 
